@@ -1,0 +1,40 @@
+<!-- public/display.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Uploaded Files</title>
+</head>
+<body>
+  <h1>Uploaded Files</h1>
+  <ul id="fileList" style="list-style: none;"></ul>
+ 
+
+  <script>
+    async function fetchFiles() {
+      try {
+        const response = await fetch('http://localhost:5000/api/getFiles');
+        const data = await response.json();
+
+        const fileList = document.getElementById('fileList');
+        const message=document.getElementById('message');
+        fileList.innerHTML = '';
+        
+        data.files.forEach(file => {
+          const listItem = document.createElement('li');
+          const link = document.createElement('a');
+          link.href = file.filePath;
+          link.textContent = file.filePath;
+          listItem.appendChild(link);
+          fileList.appendChild(listItem);
+        });
+      } catch (error) {
+        console.error('Error fetching files:', error);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', fetchFiles);
+  </script>
+</body>
+</html>
